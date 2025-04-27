@@ -6,11 +6,48 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+ 
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id            String       @id @default(uuid())
+  clerkUserId   String       @unique 
+  email         String       @unique 
+  name          String?       
+  imageUrl      String?      
+  phone         String?  
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  role          UserRole     @default(USER)
+  
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+model Party {
+  id         Int      @id @default(autoincrement())
+  name       String
+  imageUrl   String
+  members    Member[] 
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Member {
+  id        Int      @id @default(autoincrement())
+  name      String
+  imageUrl  String
+  partyId   Int
+  party     Party    @relation(fields: [partyId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
