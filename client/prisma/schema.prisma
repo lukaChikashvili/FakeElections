@@ -34,7 +34,7 @@ enum UserRole {
 }
 
 model Party {
-  id         Int      @id @default(autoincrement())
+  id         String       @id @default(uuid())
   name       String
   imageUrl   String
   partyNumber  Int
@@ -47,10 +47,10 @@ model Party {
 }
 
 model Member {
-  id        Int      @id @default(autoincrement())
+  id        String       @id @default(uuid())
   name      String
   imageUrl  String
-  partyId   Int
+  partyId   String
   party     Party    @relation(fields: [partyId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

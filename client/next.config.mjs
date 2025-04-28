@@ -5,6 +5,10 @@ const nextConfig = {
             {
                 protocol: "https",
                 hostname: "nkowzeugjsbwgwdzptkm.supabase.co"
+            },
+            {
+                protocol: 'https',
+                hostname: "upload.wikimedia.org"
             }
         ]
     }

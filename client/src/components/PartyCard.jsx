@@ -4,8 +4,11 @@ import React from 'react'
 import { Button } from './ui/button';
 import { CardContent } from './ui/card';
 import { Eye, Vote } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 const PartyCard = ({value}) => {
+    const router = useRouter();
+    
   return (
     <div className="relative flex flex-col gap-[10px] w-full border p-4 rounded-md mt-4 shadow-lg overflow-hidden">
       

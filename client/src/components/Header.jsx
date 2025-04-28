@@ -14,10 +14,10 @@ const Header = async ({ isAdminPage = false}) => {
     const isAdmin = user?.role === "ADMIN";
     
   return (
-    <header className=' top-0 w-full backdrop-blur-md z-50 '>
-    <nav className='mx-auto px-12 py-4 flex items-center justify-between'>
+    <header className=' top-0 w-full backdrop-blur-md z-50  '>
+    <nav className='mx-auto px-12 py-8 flex items-center justify-between'>
       <Link href = {isAdminPage ? "/admin" : "/"}>
-           <Image src = {logo} alt = "logo" width = {150} height={150} />
+           <Image className='absolute -top-4' src = {logo} alt = "logo" width = {150} height={150} />
           {isAdminPage && (
          <span className="text-xs font-extralight">admin</span>
        )}

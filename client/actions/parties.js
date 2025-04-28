@@ -64,7 +64,7 @@ export async function AddPartyToDB({ partyData, images }) {
    
     const party = await db.party.create({
       data: {
-       
+        id: partyId,
         name: partyData.name,
         imageUrl: imageUrls[0], 
         partyNumber: partyData.partyNumber,
@@ -154,5 +154,47 @@ export async function deleteParty(id) {
     
   } catch (error) {
     console.log(error)
+  }
+}
+
+
+export async function getPartyById(partyId) {
+  try {
+    const { userId } = await auth();
+    let dbUser = null;
+
+    if (userId) {
+      dbUser = await db.user.findUnique({
+        where: { clerkUserId: userId },
+      });
+    }
+
+    const party = await db.party.findUnique({
+      where: { id: partyId },
+      include: {
+        members: true, 
+      },
+      
+    });
+
+    if (!party) {
+      return {
+        success: false,
+        error: "Party not found",
+      };
+    }
+
+    return {
+      success: true,
+      data: party,
+      user: dbUser, 
+    };
+
+  } catch (error) {
+    console.error("Error fetching party:", error);
+    return {
+      success: false,
+      error: "Something went wrong",
+    };
   }
 }
