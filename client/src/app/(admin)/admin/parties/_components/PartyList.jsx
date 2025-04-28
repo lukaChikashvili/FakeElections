@@ -6,16 +6,20 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Eye, Loader2, MoreHorizontal, Plus, Search, Trash2, Wine } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import useFetch from '../../../../../../hooks/useFetch';
-import { getParties } from '../../../../../../actions/parties';
+import { deleteParty, getParties } from '../../../../../../actions/parties';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { toast } from 'sonner';
 
 
 
 const PartyList = () => {
     const router = useRouter();
+
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [partyToDelete, setPartyToDelete] = useState(null);
 
     const {
          loading: PartyLoading,
@@ -24,24 +28,47 @@ const PartyList = () => {
          error: partyError
     } = useFetch(getParties);
 
+    const {
+      loading: deleteLoading,
+      fn: deletePartyfn,
+      data: deleteResult,
+      error: deleteError
+ } = useFetch(deleteParty);
+
     useEffect(() => {
         fetchParty();
       }, []);
       
-      useEffect(() => {
-        console.log("Party result changed:", partyResult);
-      }, [partyResult]);
-      
 
+      
+      useEffect(() => {
+        if (deleteResult?.success) {
+          toast.success("პარტია წაიშალა წარმატებით");
+          fetchParty();
+        }
+    
+       
+      }, [deleteResult]);
+
+
+      const handlePartyDelete = async () => {
+        if(!partyToDelete) return;
+
+        await deletePartyfn(partyToDelete.id);
+
+        setDeleteDialogOpen(false);
+        setPartyToDelete(null);
+
+      }
 
   return (
     <div>
        <div className="w-full mt-12">
       <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center justify-between">
         <Button
-          variant="destructive"
+          variant="outline"
           onClick={() => router.push("/admin/parties/create")}
-          className="flex items-center cursor-pointer"
+          className="flex items-center cursor-pointer bg-blue-500 text-white"
         >
           <Plus className="h-4 w-4" />
           დაამატე პარტია
@@ -57,7 +84,7 @@ const PartyList = () => {
               <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
             </div>
           ) : partyResult?.success && partyResult?.data.length > 0 ? (
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto ">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -69,11 +96,11 @@ const PartyList = () => {
                     <TableHead className="text-right">მოქმედება</TableHead>
                   </TableRow>
                 </TableHeader>
-                <TableBody>
+                <TableBody >
                   {partyResult?.data.map((party) => (
                     <TableRow key={party.id}>
                       <TableCell>
-                        <div className="w-10 h-10 rounded-md overflow-hidden">
+                        <div className="w-10 h-10 rounded-md overflow-hidden ">
                         {party.imageUrl ? (
                               <Image
                                 src={party.imageUrl}
@@ -93,6 +120,19 @@ const PartyList = () => {
                       <TableCell className="font-medium">
                         {party.name} 
                       </TableCell>
+
+                      <TableCell className="font-medium">
+                        {party.foundedYear} 
+                      </TableCell>
+
+                      <TableCell className="font-medium">
+                        {party.partyNumber} 
+                      </TableCell>
+
+                      <TableCell className="font-medium">
+                        {party.partyLeader} 
+                      </TableCell>
+                      
                       
                       <TableCell>
                         <Button
@@ -130,7 +170,10 @@ const PartyList = () => {
                            
                             <DropdownMenuItem
                               className="text-red-600"
-                              
+                              onClick={() => {
+                                setPartyToDelete(party);
+                                setDeleteDialogOpen(true);
+                              }}
                             >
                               <Trash2 className="mr-2 h-4 w-4" />
                               წაშლა
@@ -154,7 +197,7 @@ const PartyList = () => {
       </Card>
 
 
-      <Dialog >
+      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>დაადასტურე წაშლა</DialogTitle>
@@ -166,15 +209,24 @@ const PartyList = () => {
           <DialogFooter>
             <Button
               variant="outline"
-             
+              onClick={() => setDeleteDialogOpen(false)}
+            
             >
               გაუქმება
             </Button>
             <Button
               variant="destructive"
+              onClick={handlePartyDelete}
               
             >
-              
+              {deleteLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  იშლება...
+                </>
+              ) : (
+                "წაშალე პარტია"
+              )}
             </Button>
           </DialogFooter>
         </DialogContent>

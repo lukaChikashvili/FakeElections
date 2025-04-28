@@ -124,3 +124,35 @@ export async function getParties() {
      console.log(error)
    }
 }
+
+export async function deleteParty(id) {
+  try {
+    const { userId } = await auth();
+
+    if (!userId) throw new Error("Unauthorized");
+
+    const user = await db.user.findUnique({
+      where: { clerkUserId: userId },
+    });
+
+    if (!user) throw new Error("User not found");
+
+    await db.member.deleteMany({
+      where: {
+        partyId: id, 
+      },
+    });
+
+    await db.party.delete({
+      where: {id}
+    });
+
+
+    return {
+      success: true,
+    };
+    
+  } catch (error) {
+    console.log(error)
+  }
+}
