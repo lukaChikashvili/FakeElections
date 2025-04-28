@@ -3,6 +3,7 @@ import Image from 'next/image';
 import React from 'react'
 import { Button } from './ui/button';
 import { CardContent } from './ui/card';
+import { Eye, Vote } from 'lucide-react';
 
 const PartyCard = ({value}) => {
   return (
@@ -35,17 +36,25 @@ const PartyCard = ({value}) => {
 
     
     <CardContent>
-      <h2 className="font-bold text-slate-800">{value?.name?.substring(0, 25)}...</h2>
+      <h2 className="font-bold text-slate-800 ">{value?.name?.substring(0, 20)}...</h2>
       
-     
+        <h2><span className='text-sm italic underline underline-offset-4 text-slate-600'>თავმჯდომარე: </span>{value?.partyLeader?.substring(0, 17)}...</h2>
+        <h2 className='text-blue-500 text-xl '><span className='text-sm italic underline underline-offset-4 text-slate-600'>პარტიის ნომერი:  </span><span className='font-bold  rounded-full'>{value?.partyNumber}</span></h2>
     </CardContent>
 
-  
+  <div className='flex items-center justify-center gap-2'>
     <Button onClick={() => {
-            router.push(`/tamadas/${value.id}`);
-          }} className="cursor-pointer bg-[#4379F2]" >
-      დეტალურად ნახვა
+            router.push(`/parties/${value.id}`);
+          }} className="cursor-pointer flex items-center justify-center gap-2 "  variant="outline">
+      <Eye  /> დეტალურად ნახვა
     </Button>
+
+    <Button onClick={() => {
+            router.push(`/parties/${value.id}`);
+          }} className="cursor-pointer bg-[#4379F2]" >
+      <Vote /> ხმის მიცემა
+    </Button>
+    </div>
   </div>
   )
 }
