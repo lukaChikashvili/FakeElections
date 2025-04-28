@@ -25,6 +25,7 @@ model User {
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   role          UserRole     @default(USER)
+  votes         Vote[]
   
 }
 
@@ -41,10 +42,25 @@ model Party {
   partyLeader   String
   foundedYear  String
   description  String
+  votes        Int       @default(0) 
   members    Member[] 
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+   votedBy      Vote[] 
 }
+
+model Vote {
+  id        String   @id @default(uuid())
+  userId    String   
+  partyId   String   
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id])
+  party     Party    @relation(fields: [partyId], references: [id])
+
+  @@unique([userId, partyId]) 
+}
+
 
 model Member {
   id        String       @id @default(uuid())
