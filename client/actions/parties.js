@@ -92,3 +92,33 @@ export async function AddPartyToDB({ partyData, images }) {
     throw new Error("Error adding party: " + error.message);
   }
 }
+
+
+export async function getParties() {
+   try {
+
+    const { userId } = await auth();
+
+    if (!userId) throw new Error("Unauthorized");
+
+    const user = await db.user.findUnique({
+      where: { clerkUserId: userId },
+    });
+
+    if (!user) throw new Error("User not found");
+
+    const parties = await db.party.findMany({
+      where: {
+        orderBy: { createdAt: "desc" },
+      }
+    });
+
+    return {
+      success: true,
+      data: parties
+    }
+    
+   } catch (error) {
+     console.log(error)
+   }
+}
