@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
 import { Button } from './ui/button';
-import { Heart, Layout, LogIn, User } from 'lucide-react';
+import { Component, Heart, Layout, LogIn, User } from 'lucide-react';
 import logo from '../assets/logo.png'
 
 const Header = async ({ isAdminPage = false}) => {
@@ -25,6 +25,13 @@ const Header = async ({ isAdminPage = false}) => {
 
       <div className='flex gap-4 '>
        <SignedIn>
+            
+           
+       <Link href = "/parties">
+            <Button className="bg-[#4379F2] hover:bg-[#5d74a6] cursor-pointer">
+             <Component /> ყველა პარტია</Button>
+            </Link>
+       </SignedIn>
          
              {isAdmin && (
              <Link href="/admin">
@@ -34,7 +41,8 @@ const Header = async ({ isAdminPage = false}) => {
                </Button>
              </Link>
            )}
-       </SignedIn>
+
+
 
        <SignedOut>
          <SignInButton forceRedirectUrl='/'>

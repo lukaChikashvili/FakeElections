@@ -215,7 +215,8 @@ const PartyList = () => {
               გაუქმება
             </Button>
             <Button
-              variant="destructive"
+              variant="outline"
+              className="bg-blue-500 text-white"
               onClick={handlePartyDelete}
               
             >
