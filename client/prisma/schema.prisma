@@ -37,6 +37,10 @@ model Party {
   id         Int      @id @default(autoincrement())
   name       String
   imageUrl   String
+  partyNumber  Int
+  partyLeader   String
+  foundedYear  String
+  description  String
   members    Member[] 
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt

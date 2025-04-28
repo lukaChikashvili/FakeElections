@@ -11,10 +11,15 @@ import { Label } from "@/components/ui/label";
 import { Trash2, Upload, X } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
  
 
 const AddPartyForm = () => {
   const [partyName, setPartyName] = useState("");
+  const [partyNumber, setPartyNumber] = useState(0);
+  const [partyLeader, setPartyLeader] = useState("");
+  const [foundedYear, setFoundedYear] = useState("");
+  const [description, setDescription] = useState("");
   const [members, setMembers] = useState([{ name: "", imageUrl: "" }]);  
   const [uploadedImages, setUploadedImages] = useState([]);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -124,6 +129,10 @@ const AddPartyForm = () => {
     await addPartyfn({
       partyData: {
         name: partyName,
+        partyLeader: partyLeader,
+        partyNumber: partyNumber,
+        foundedYear: foundedYear,
+        description: description,
         members: members,  
       },
       images: uploadedImages,
@@ -147,7 +156,63 @@ const AddPartyForm = () => {
           className="mt-2 p-2 border border-gray-300 rounded w-full"
           placeholder="ჩაწერეთ პარტიის სახელი..."
         />
+
+        
       </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700">პარტიის ნომერი</label>
+        <input
+          type="number"
+          value={partyNumber}
+          onChange={(e) => setPartyNumber(e.target.value ? parseInt(e.target.value) : "")}
+          className="mt-2 p-2 border border-gray-300 rounded w-full"
+          placeholder="ჩაწერეთ პარტიის ნომერი..."
+        />
+
+        
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700">პარტიის დაფუძნების თარიღი</label>
+        <input
+          type="text"
+          value={foundedYear}
+          onChange={(e) => setFoundedYear(e.target.value)}
+          className="mt-2 p-2 border border-gray-300 rounded w-full"
+          placeholder="ჩაწერეთ პარტიის დაარსების თარიღი..."
+        />
+
+        
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700">პარტიის თავმჯდომარე</label>
+        <input
+          type="text"
+          value={partyLeader}
+          onChange={(e) => setPartyLeader(e.target.value)}
+          className="mt-2 p-2 border border-gray-300 rounded w-full"
+          placeholder="ჩაწერეთ პარტიის თავმჯდომარე..."
+        />
+
+        
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700">პარტიის აღწერა</label>
+        <Textarea
+          type="text"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          className="mt-2 p-2 border border-gray-300 rounded w-full"
+          placeholder="ჩაწერეთ პარტიის აღწერა..."
+        />
+
+        
+      </div>
+
+      
 
       <div>
                   <Label

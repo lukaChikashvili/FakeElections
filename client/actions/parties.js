@@ -67,6 +67,10 @@ export async function AddPartyToDB({ partyData, images }) {
        
         name: partyData.name,
         imageUrl: imageUrls[0], 
+        partyNumber: partyData.partyNumber,
+        partyLeader: partyData.partyLeader,
+        foundedYear: partyData.foundedYear,
+        description: partyData.description
       },
     });
 
@@ -108,9 +112,7 @@ export async function getParties() {
     if (!user) throw new Error("User not found");
 
     const parties = await db.party.findMany({
-      where: {
-        orderBy: { createdAt: "desc" },
-      }
+      orderBy: { createdAt: 'desc' }
     });
 
     return {
