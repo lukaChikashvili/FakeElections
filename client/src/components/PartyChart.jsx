@@ -12,7 +12,7 @@ import {
 
 export default function PartyChart({ data }) {
   return (
-    <ResponsiveContainer width="80%" height={500}>
+    <ResponsiveContainer width="90%" height={500}>
       <BarChart data={data}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />
