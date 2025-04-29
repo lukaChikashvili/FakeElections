@@ -99,8 +99,7 @@ export async function AddPartyToDB({ partyData, images }) {
 
 
 export async function getParties() {
-   try {
-
+  try {
     const { userId } = await auth();
 
     if (!userId) throw new Error("Unauthorized");
@@ -111,20 +110,39 @@ export async function getParties() {
 
     if (!user) throw new Error("User not found");
 
+    
     const parties = await db.party.findMany({
-      orderBy: { createdAt: 'desc' }
+      include: {
+        _count: {
+          select: { votedBy: true }, 
+        },
+        votedBy: {
+          where: { userId: user.id }, 
+          select: { id: true }, 
+        },
+      },
+      orderBy: { createdAt: "desc" },
     });
+
+
+    const partiesWithVotes = parties.map(party => ({
+      ...party,
+      voted: party.votedBy.length > 0,
+      votesCount: party._count.votedBy, 
+    }));
 
     return {
       success: true,
-      data: parties
-    }
-    
-   } catch (error) {
-     console.log(error)
-   }
+      data: partiesWithVotes,
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: error.message || "Something went wrong",
+    };
+  }
 }
-
 export async function deleteParty(id) {
   try {
     const { userId } = await auth();

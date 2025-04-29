@@ -5,15 +5,34 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useAuth } from '@clerk/nextjs';
-import { Calendar, Heart, Share2, User, Users, Vote, Wine } from 'lucide-react';
+import { Calendar, Check, Heart, Share2, User, Users, Vote, Wine } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
+import { toast } from 'sonner';
+import { voteForParty } from '../../../../../../actions/voting';
 
 const PartyDetails = ({ party }) => {
   const router = useRouter();
   const { isSignedIn } = useAuth();
 
+  const [voted, setVoted] = useState(party?.voted);
+
+  const handleVoting = async () => {
+    try {
+      const res = await voteForParty(party?.id);
+     
+      
+      if (res?.success) {
+        toast.success("თქვენ მიეცით ხმა");
+        setVoted(true); 
+      } else {
+        toast.error(res?.message || "ხმის მიცემისას მოხდა შეცდომა");
+      }
+    } catch (error) {
+      toast.error("თქვენ უკვე მიეცით ხმა");
+    }
+  };
 
   return (
     <div className="py-10 px-4 sm:px-6 md:px-10 lg:px-20 xl:px-36">
@@ -76,7 +95,9 @@ const PartyDetails = ({ party }) => {
             )}
           </div>
 
-          <Button className="w-full mt-12 bg-[#4379F2] cursor-pointer"> <Vote /> ხმის მიცემა</Button>
+          <Button  onClick={handleVoting} className={`cursor-pointer ${voted ? "bg-green-500" : "bg-[#4379F2]"} w-full mt-12`} >
+    {voted ? <Check /> : <Vote /> }  {voted ? "ხმა მიცემულია" : "ხმის მიცემა"}
+    </Button>
         </div>
 
 
