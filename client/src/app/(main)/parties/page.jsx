@@ -6,6 +6,7 @@ import { getParties } from '../../../../actions/parties';
 import PartyCard from '@/components/PartyCard';
 import { Skeleton } from '@/components/ui/skeleton';
 
+
 const AllParties = () => {
 
     const {

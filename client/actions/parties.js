@@ -121,7 +121,7 @@ export async function getParties() {
           select: { id: true }, 
         },
       },
-      orderBy: { createdAt: "desc" },
+      orderBy: { createdAt: "asc" },
     });
 
 

@@ -4,9 +4,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
 import { Button } from './ui/button';
-import { Component, Layout, LogIn, User } from 'lucide-react';
+import { Component, Layout, LogIn } from 'lucide-react';
 import logo from '../assets/logo.png'
-import { Input } from './ui/input';
+
 
 const Header = async ({ isAdminPage = false}) => {
    

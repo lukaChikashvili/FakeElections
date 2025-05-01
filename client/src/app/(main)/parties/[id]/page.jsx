@@ -3,6 +3,9 @@ import { getPartyById } from '../../../../../actions/parties';
 import { notFound } from 'next/navigation';
 import PartyDetails from './_components/PartyDetails';
 
+
+
+
 const PartyPage = async ({ params }) => {
 
     const { id } = await params;
