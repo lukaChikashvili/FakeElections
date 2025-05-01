@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import { AddPartyToDB } from "../../../../../../../actions/parties";
-import { useDropzone } from "react-dropzone/";
+import { useDropzone } from "react-dropzone";
 import useFetch from "../../../../../../../hooks/useFetch";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
