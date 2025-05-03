@@ -32,7 +32,9 @@ const Header = async ({ isAdminPage = false}) => {
            
        <Link href = "/parties">
             <Button className="bg-[#4379F2] hover:bg-[#5d74a6] cursor-pointer">
-             <Component /> ყველა პარტია</Button>
+             <Component /> 
+             <span className="hidden md:inline">პორტალი</span>
+             </Button>
             </Link>
        </SignedIn>
          
